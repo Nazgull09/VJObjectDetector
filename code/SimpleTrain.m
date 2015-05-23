@@ -1,16 +1,17 @@
+
 % trains an ada-boost model on tiny faces
 % adjust the parameters according to your available system memory
 % nTrainPosData/nTrainNegData - Количество позитивных/негативных признаков
 % W, H - Ширина и длина картинки.
 
 
-nTrainPosData = 4000;
-nTrainNegData = 8000;
+nTrainPosData = 800;
+nTrainNegData = 1600;
 nTestPosData = 500;
 nTestNegData = 1000;
 nLevels = 100;
-W = 19;
-H = 19;
+W = 24;
+H = 24;
 
 
 %Списки лиц/не лиц для обучения
@@ -39,19 +40,20 @@ NTestData = zeros(W, H, nTestNegData);
 % Считываем imread-ом изображения правильные/неправильные для тренировки
 disp('preparing training data...');
 for i=1:size(PTrainData,3)
-    PTrainData(:,:,i) = imread([posImageDir pfiles(trainPosPerm(i)).name]);
+    
+    PTrainData(:,:,i) = rgb2gray(imread([posImageDir pfiles(trainPosPerm(i)).name]));
 end
 for i=1:size(NTrainData,3)
-    NTrainData(:,:,i) = imread([negImageDir nfiles(trainNegPerm(i)).name]);
+    NTrainData(:,:,i) = rgb2gray(imread([negImageDir nfiles(trainNegPerm(i)).name]));
 end
 
 % Считываем для теста
 disp('preparing test data...');
 for i=1:size(PTestData,3)
-    PTestData(:,:,i) = imread([posImageDir pfiles(testPosPerm(i)).name]);
+    PTestData(:,:,i) = rgb2gray(imread([posImageDir pfiles(testPosPerm(i)).name]));
 end
 for i=1:size(NTestData,3)
-    NTestData(:,:,i) = imread([negImageDir nfiles(testNegPerm(i)).name]);
+    NTestData(:,:,i) = rgb2gray(imread([negImageDir nfiles(testNegPerm(i)).name]));
 end
 
 % find classifier parameters
