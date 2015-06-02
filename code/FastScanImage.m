@@ -1,9 +1,8 @@
-function dets = FastScanImage(Cparams, imns, min_s, max_s, step_s, jump)
+function dets = FastScanImage(Cparams, imns, min_s, max_s, step_s)
 
 if(size(imns,3)>1), imns = rgb2gray(imns); end
 imns = double(imns);
 if nargin<5, step_s = 0.1; end
-if nargin<6, jump = false; end
 if step_s<=1, error('step_s should be higher than one!'); end
 
 W=Cparams.W; H=Cparams.H;
@@ -36,16 +35,11 @@ while s>=min_s
     sdets = [];    
     w = size(sim,2);
     h = size(sim,1);
-    if jump
-        step_slide_w = floor(max(1, w/60));
-        step_slide_h = floor(max(1, h/60));
-    end
     for i=2:step_slide_w:w-W+1
         for j=2:step_slide_h:h-H+1
             mu = (ii_im(j-1, i-1) + ii_im(j+H-1, i+W-1) - ii_im(j+H-1, i-1) - ii_im(j-1, i+W-1))/sq;
             vr = (ii2_im(j-1, i-1) + ii2_im(j+H-1, i+W-1) - ii2_im(j+H-1, i-1) - ii2_im(j-1, i+W-1)-sq*mu*mu)/(sq-1);
-            if(vr>20)
-                subim = (sim(j:j+H-1,i:i+W-1) - mu)/sqrt(vr);
+                subim = (sim(j:j+H-1,i:i+W-1)-mu)/sqrt(vr); %Нормализация. Без этого не может сравнивать с признаками
                 ii_subim = cumsum(cumsum(subim),2);
                 ii_subim = ii_subim(:);            
                 fs_first = fmat_first * ii_subim;
@@ -57,7 +51,6 @@ while s>=min_s
                         sdets = [sdets; i,j,W,H];
                     end
                 end
-            end
         end
     end
     nd = size(sdets,1);

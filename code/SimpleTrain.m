@@ -3,15 +3,15 @@
 % nTrainPosData/nTrainNegData - Количество позитивных/негативных признаков
 % W, H - Ширина и длина картинки.
 
-for j=1:4
+for j=1:1
 
 switch j
     case 1      %24x24
-        nTrainPosData = 30;
-        nTrainNegData = 50;
-        nTestPosData = 30;
-        nTestNegData = 50;
-        nLevels = 10;
+        nTrainPosData = 2000;
+        nTrainNegData = 3000;
+        nTestPosData = 500;
+        nTestNegData = 1000;
+        nLevels = 100;
         W = 24;
         H = 24;
     case 2      %32x32
